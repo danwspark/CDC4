@@ -8,13 +8,18 @@ from copy import deepcopy
 from Players import *
 
 def main():
-    game = CChecker(6)
+    game = CChecker(17)
     print game
-    """
-    p1 = RandomChoicePlayer(game)
+    
+    p1 = HumanPlayer(game)
     p2 = HumanPlayer(game)
-    game.playOneGame(p1, p2)
-    """
+    p3 = HumanPlayer(game)
+    p4 = HumanPlayer(game)
+    p5 = HumanPlayer(game)
+    p6 = HumanPlayer(game)
+
+    game.playOneGame(p1, p2, p3, p4, p5, p6)
+    
 
 class CChecker(object):
     def __init__(self, size):
@@ -30,7 +35,7 @@ class CChecker(object):
         self.board = []
         for i in range(self.size):
             self.board.append(['-']*self.size)
-"""
+    """
     def __str__(self):
         #Returns a string representing the board.
         result = "\n"
@@ -45,18 +50,21 @@ class CChecker(object):
         return result
         """
 
-    def playOneGame(self, player1, player2, show=True):
+    def playOneGame(self, player1, player2, p3, p4, p5, p6, show=True):
         """Plays a game and returns winner."""
         self.reset()
-        player1.setSide('B')
-        player2.setSide('W')
-        player3.
+        player1.setSide(0)
+        player2.setSide(1)
+        p3.setSide(2)
+        p4.setSide(3)
+        p5.setSide(4)
+        p6.setSide(5)
         print("%s vs %s" % (player1.name, player2.name))
         while True:
             if show:
                 print(self)
-                print("Player B's turn")
-            self.turn = 'B'
+                print("Player 0's turn")
+            self.turn = 0
             row, col = player1.getMove(self.board)
             self.board[row][col] = self.turn
             #print "score for black: ",player1.eval(self.board)
@@ -65,12 +73,12 @@ class CChecker(object):
             if show:
                 print("Made move (%d, %d)" % (row, col))
             if self.blackWins(self.board): 
-                winner = 'B'
+                winner = 0
                 break
             if show:
                 print(self)
-                print("Player W's turn")
-            self.turn = "W"
+                print("Player 1's turn")
+            self.turn = 1
             row, col = player2.getMove(self.board)
             
             self.board[row][col] = self.turn
@@ -109,7 +117,7 @@ class CChecker(object):
         """Returns a list of neighboring cells to the given row and col."""
         neighbors = []
 
-         if row > 0:
+        if row > 0:
             neighbors.append((row-1, col))
         if row < 16:
             neighbors.append((row+1, col))
