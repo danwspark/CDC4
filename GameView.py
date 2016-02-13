@@ -1,4 +1,5 @@
 from graphics import *
+from Game import CChecker
 import math
 
 makeGraphicsWindow(800, 600)
@@ -28,6 +29,7 @@ def initBoard():
 # this function is called once to initialize your new world
 
 def startWorld(world):
+	world.game = CChecker()
     world.board = initBoard()
 
  
