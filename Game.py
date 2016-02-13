@@ -181,7 +181,6 @@ class CChecker(object):
         row = piece[0]
         col = piece[1]
 
-        visited = set()
         queue = FIFO_Queue()
 
         queue.add(piece)
@@ -214,13 +213,26 @@ class CChecker(object):
 
 
         
-    def findJump(row,col,brow,bcol):
+    def findJump(self,row,col,brow,bcol):
         """
         for current row and col, and blocked neighbor brow, bcol:
         returns coordinate of jump destination
         returns -1,-1 if blocked there or unavailable
         """
+        deltaRow = brow - row
+        deltaCol = bcol - col
+        destRow = deltaRow + brow
+        destCol = deltaCol + bcol
 
+        if destRow > 16 or destRow < 0 \
+            or destCol > 16 or destCol < 0:
+            return (-1,-1)
+
+        if self.board[destRow][destCol] == -1:
+            return (destRow,destCol)
+
+        else:
+            return (-1,-1)
 
 
 

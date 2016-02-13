@@ -76,7 +76,7 @@ class HumanPlayer(Player):
                 print "Invalid piece. try again"
                 continue
             drow, dcol = input ("Where do you want to move it?")
-            while !game.checkMove([row,col],drow,dcol):
+            while !game.checkMove((row,col),drow,dcol):
                 print "Invalid Move. Try again!"
                 drow, dcol = input ("Where do you want to move it?")
 
