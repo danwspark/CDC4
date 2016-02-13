@@ -4,7 +4,7 @@
 ########################################
 
 from Players import *
-from HexGame import *
+from Game import *
 from random import choice
 import time
 
