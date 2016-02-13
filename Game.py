@@ -8,7 +8,7 @@ from copy import deepcopy
 from Players import *
 
 def main():
-    game = HexGame(6)
+    game = CChecker(6)
     print game
     """
     p1 = RandomChoicePlayer(game)
@@ -16,7 +16,7 @@ def main():
     game.playOneGame(p1, p2)
     """
 
-class HexGame(object):
+class CChecker(object):
     def __init__(self, size):
         """The board is represented as a list of lists with length
         size. Blank locations are represented by the character '-'.
