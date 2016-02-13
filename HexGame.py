@@ -9,9 +9,12 @@ from Players import *
 
 def main():
     game = HexGame(6)
+    print game
+    """
     p1 = RandomChoicePlayer(game)
     p2 = HumanPlayer(game)
     game.playOneGame(p1, p2)
+    """
 
 class HexGame(object):
     def __init__(self, size):
@@ -79,28 +82,6 @@ class HexGame(object):
             print("%s wins" % self.turn)
         return winner
 
-    def playNGames(self, n, player1, player2, show=False):
-        """
-        Will play out n games between player1 and player2.
-        The players alternate going first.  Prints the total
-        number of games won by each player.
-        """
-        first = player1
-        second = player2
-        for i in range(n):
-            print "Game", i
-            winner = self.playOneGame(first, second, show)
-            if winner == 'B':
-                first.won()
-                second.lost()
-                print first.name, "wins"
-            else:
-                first.lost()
-                second.won()
-                print second.name, "wins"
-            first, second = second, first
-        print first.results()
-        print second.results()
 
     def getPossibleMoves(self, board):
         """Returns a list of all possible moves on the given board."""
