@@ -32,7 +32,7 @@ class CChecker(object):
             self.board.append(['-']*self.size)
 """
     def __str__(self):
-        """Returns a string representing the board."""
+        #Returns a string representing the board.
         result = "\n"
         side = "black   "
         result += " "*self.size +  "white\n"
@@ -170,10 +170,9 @@ class CChecker(object):
     def checkPiece(self,row,col,side):
         return self.board[row][col]==side
 
-    def checkMove(self, piece,drow,dcol):#rename getmove
-    #make actal checkmove
+    def getDests(self,piece):
         """
-        returns 
+        returns list of tupules of possible destinations
         """
         possible = []
         
@@ -208,7 +207,21 @@ class CChecker(object):
                 dest = findJump(curr[0],curr[1],jump[0],jump[1])
                 if dest[0] == -1:
                     continue
+                possible.append(dest)
                 queue.add(dest)
+
+    def checkMove(self, piece,drow,dcol):#rename getmove
+    #make actal checkmove
+        """
+        returns true if move valid. false if not
+        """
+        poss = getDests(piece)
+
+        if (drow,dcol) in poss:
+            return True
+        else:
+            return False
+        
 
 
 
@@ -233,7 +246,6 @@ class CChecker(object):
 
         else:
             return (-1,-1)
-
 
 
     def countConnected(self, board, side):
