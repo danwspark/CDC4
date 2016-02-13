@@ -30,7 +30,7 @@ class HexGame(object):
         self.board = []
         for i in range(self.size):
             self.board.append(['-']*self.size)
-
+"""
     def __str__(self):
         """Returns a string representing the board."""
         result = "\n"
@@ -43,12 +43,14 @@ class HexGame(object):
             result += self.board[i][self.size-1] + "  " + side[i] + "\n"
         result += " "*(int(2*self.size)) + "white"
         return result
+        """
 
     def playOneGame(self, player1, player2, show=True):
         """Plays a game and returns winner."""
         self.reset()
         player1.setSide('B')
         player2.setSide('W')
+        player3.
         print("%s vs %s" % (player1.name, player2.name))
         while True:
             if show:
