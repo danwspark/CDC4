@@ -46,33 +46,7 @@ class CChecker(object):
 
     def reset(self):
         """Resets the board to the starting configuration."""
-<<<<<<< HEAD
-        self.board = []
-        for i in range(self.size):
-            self.board.append(['-']*self.size)
-    """
-||||||| merged common ancestors
-        self.board = []
-        for i in range(self.size):
-            self.board.append(['-']*self.size)
-"""
-=======
         self.board = initBoard()
-"""
->>>>>>> 3792f3f18a236326c24006b9a7d25c8e3b06db2b
-    def __str__(self):
-        #Returns a string representing the board.
-        result = "\n"
-        side = "black   "
-        result += " "*self.size +  "white\n"
-        for i in range(self.size):
-            result +=  " " * i + side[i] + "  "
-            for j in range(self.size-1):
-                result += self.board[i][j] + " "
-            result += self.board[i][self.size-1] + "  " + side[i] + "\n"
-        result += " "*(int(2*self.size)) + "white"
-        return result
-        """
 
 
     def playOneGame(self, player1, player2, p3, p4, p5, p6, show=True):
@@ -84,7 +58,7 @@ class CChecker(object):
         pass
 
     def playOneGame(self, player1, player2, show=True):
-
+        print "playonegame inside"
         """Plays a game and returns winner."""
         self.reset()
         player1.setSide(0)
