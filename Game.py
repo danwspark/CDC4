@@ -187,8 +187,6 @@ class CChecker(object):
         queue.add(piece)
         neighbors = getNeighbors(piece[0],piece[1])
 
-        
-        #get neigbors
         """
             adds valid neighbors into list ofpossible
             adds blocked neighbors to check 
@@ -222,7 +220,7 @@ class CChecker(object):
         returns coordinate of jump destination
         returns -1,-1 if blocked there or unavailable
         """
-        
+
 
 
 

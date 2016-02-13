@@ -25,9 +25,7 @@ class Player(object):
         """
         antiSide = range(6)
         antiSide.remove(side)
-
         return antiSide
-
     def won(self):
         self.wins += 1
     def lost(self):
