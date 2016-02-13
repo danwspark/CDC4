@@ -17,19 +17,31 @@ def main():
     """
 
 class CChecker(object):
-    def __init__(self, size):
+    def __init__(self):
         """The board is represented as a list of lists with length
         size. Blank locations are represented by the character '-'.
         The players locations are represented as 'B' and 'W'."""
-        self.size = size
-        self.turn = None # should be either 'B' or 'W'
+        self.turn = None # should be in range(6)
         self.reset()
+
+    def initBoard(self):
+        board = []
+        doc = open("init_board.txt", "r")
+
+        for line in doc:
+            line = line.strip()
+            row = []
+            for c in line:
+                if c == '*':
+                    row.append(None)
+                else:
+                    row.append(int(c)-1)
+            board.append(row)
+        return board
 
     def reset(self):
         """Resets the board to the starting configuration."""
-        self.board = []
-        for i in range(self.size):
-            self.board.append(['-']*self.size)
+        self.board = initBoard()
 """
     def __str__(self):
         #Returns a string representing the board.
@@ -44,6 +56,12 @@ class CChecker(object):
         result += " "*(int(2*self.size)) + "white"
         return result
         """
+
+    def play(self, players):
+        pass
+
+    def iterate(self):
+        pass
 
     def playOneGame(self, player1, player2, show=True):
         """Plays a game and returns winner."""
