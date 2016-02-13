@@ -58,7 +58,9 @@ class CChecker(object):
         """
 
     def play(self, players):
-        pass
+        self.reset()
+
+        
 
     def iterate(self):
         pass
