@@ -90,7 +90,7 @@ class CChecker(object):
         possible = []
         for row in range(self.size):
             for col in range(self.size):
-                if board[row][col] == '-':
+                if board[row][col] == -1:
                     possible.append((row, col))
         return possible
 
@@ -107,20 +107,22 @@ class CChecker(object):
 
     def getNeighbors(self, row, col):
         """Returns a list of neighboring cells to the given row and col."""
-        ls = []
-        if row > 0:
-            ls.append((row-1, col))
-        if row < self.size-1:
-            ls.append((row+1, col))
+        neighbors = []
+
+         if row > 0:
+            neighbors.append((row-1, col))
+        if row < 16:
+            neighbors.append((row+1, col))
         if col > 0:
-            ls.append((row, col-1))
-        if col < self.size-1:
-            ls.append((row, col+1))
-        if row > 0 and col < self.size-1:
-            ls.append((row-1, col+1))
-        if row < self.size-1 and col > 0:
-            ls.append((row+1, col-1))
-        return ls
+            neighbors.append((row, col-1))
+        if col < 16:
+            neighbors.append((row, col+1))
+        if row < 16 and col < 16:
+            neighbors.append((row+1, col+1))
+        if row > 0 and col > 0:
+            neighbors.append((row-1, col-1))
+
+        return neighbors
 
     def blackWins(self, board):
         """Returns True if black player wins, otherwise False."""
@@ -163,6 +165,66 @@ class CChecker(object):
                     continue
                 queue.add(n)
         return False
+
+
+    def checkPiece(self,row,col,side):
+        return self.board[row][col]==side
+
+    def checkMove(self, piece,drow,dcol):#rename getmove
+    #make actal checkmove
+        """
+        returns 
+        """
+        possible = []
+        
+        jumper= []
+        row = piece[0]
+        col = piece[1]
+
+        visited = set()
+        queue = FIFO_Queue()
+
+        queue.add(piece)
+        neighbors = getNeighbors(piece[0],piece[1])
+
+        
+        #get neigbors
+        """
+            adds valid neighbors into list ofpossible
+            adds blocked neighbors to check 
+        """
+        for neighbor in neighbors:
+            curr = self.board[neighbor[0]][neighbor[1]]
+            if curr != -1 or curr != None:
+                possible.append(curr)
+
+        while len(queue) != 0:
+            curr = queue.get()
+            jumper = []
+            currNeighs = getNeighbors(curr[0],curr[1])
+
+            for currNeigh in currNeighs:
+                if self.board[currNeigh[0]][currNeigh[1]] ==-1:
+                    jumper.append(curr)
+
+            for jump in jumper:
+                dest = findJump(curr[0],curr[1],jump[0],jump[1])
+                if dest[0] == -1:
+                    continue
+                queue.add(dest)
+
+
+
+        
+    def findJump(row,col,brow,bcol):
+        """
+        for current row and col, and blocked neighbor brow, bcol:
+        returns coordinate of jump destination
+        returns -1,-1 if blocked there or unavailable
+        """
+        
+
+
 
     def countConnected(self, board, side):
         """Counts how many pieces for the given side touch another piece

@@ -15,13 +15,19 @@ class Player(object):
         self.game = None
         self.wins = 0
         self.losses = 0
+
     def setSide(self, side):
         self.side = side
+
     def otherSide(self, side):
-        if side == 'W':
-            return 'B'
-        else:
-            return 'W'
+        """
+        retuns a list of 'other sides'
+        """
+        antiSide = range(6)
+        antiSide.remove(side)
+
+        return antiSide
+
     def won(self):
         self.wins += 1
     def lost(self):
@@ -63,14 +69,24 @@ class HumanPlayer(Player):
         Player.__init__(self)
         self.name = name
         self.game = game
+
     def getMove(self, board):
         print("\n%s's turn" % (self.name))
         while True:
-            row, col = input("Enter row, col: ")
+            row, col = input("Enter row, col of the piece you want to move: ")
+            if !game.checkPiece(row,col,self.side) :#must be implemented
+                print "Invalid piece. try again"
+                continue
+            drow, dcol = input ("Where do you want to move it?")
+            while !game.checkMove([row,col],drow,dcol):
+                print "Invalid Move. Try again!"
+                drow, dcol = input ("Where do you want to move it?")
+
+            """ this should be moved to somewhere in the game itself
             if row >= self.game.size or col >= self.game.size or \
                row < 0 or col < 0:
                 print("Invalid move: row and col must be on board")
             elif self.game.board[row][col] != '-':
                 print("Invalid move: there is already a piece there")
-            else:
-                return (row, col)
+            """
+            return (drow, dcol)
