@@ -17,11 +17,12 @@ class Player(object):
         self.losses = 0
     def setSide(self, side):
         self.side = side
+
     def otherSide(self, side):
-        if side == 'W':
-            return 'B'
-        else:
-            return 'W'
+        antiSide = ['A','B','C','D','E','F']
+        antiSide.remove(side)
+
+        return antiSide
     def won(self):
         self.wins += 1
     def lost(self):
