@@ -8,7 +8,8 @@ from copy import deepcopy
 from Players import *
 
 def main():
-    game = CChecker(17)
+    print "hi"
+    game = CChecker()
     print game
     
     p1 = HumanPlayer(game)
@@ -27,6 +28,8 @@ class CChecker(object):
         size. Blank locations are represented by the character '-'.
         The players locations are represented as 'B' and 'W'."""
         self.turn = None # should be in range(6)
+        self.players = []
+        self.board = []
         self.reset()
 
     def initBoard(self):
@@ -46,18 +49,25 @@ class CChecker(object):
 
     def reset(self):
         """Resets the board to the starting configuration."""
-        self.board = initBoard()
+        self.board = self.initBoard()
 
 
     def playOneGame(self, player1, player2, p3, p4, p5, p6, show=True):
+        pass
 
     def play(self, players):
         self.reset()
+        self.players = players
+        for i in range(6):
+            self.players[i].setSide(i)
 
         
-
     def iterate(self):
-        pass
+        for player in self.players:
+            row, col, drow, dcol = player.getMove(self.board)
+            self.board[row][col] = -1
+            self.board[drow][dcol] = player.side
+
 
     def playOneGame(self, player1, player2, show=True):
         print "playonegame inside"
