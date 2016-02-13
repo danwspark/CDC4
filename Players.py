@@ -20,7 +20,10 @@ class Player(object):
         self.side = side
 
     def otherSide(self, side):
-        antiSide = ['A','B','C','D','E','F']
+        """
+        retuns a list of 'other sides'
+        """
+        antiSide = range(6)
         antiSide.remove(side)
 
         return antiSide
@@ -79,7 +82,7 @@ class HumanPlayer(Player):
                 print "Invalid Move. Try again!"
                 drow, dcol = input ("Where do you want to move it?")
 
-            """
+            """ this should be moved to somewhere in the game itself
             if row >= self.game.size or col >= self.game.size or \
                row < 0 or col < 0:
                 print("Invalid move: row and col must be on board")
