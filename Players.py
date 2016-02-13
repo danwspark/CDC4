@@ -3,7 +3,7 @@
 # Spring 2016, Swarthmore College
 ########################################
 
-from HexGame import *
+from Game import *
 from random import choice, shuffle
 
 class Player(object):
