@@ -72,11 +72,11 @@ class HumanPlayer(Player):
         print("\n%s's turn" % (self.name))
         while True:
             row, col = input("Enter row, col of the piece you want to move: ")
-            if !game.checkPiece(row,col,self.side) :#must be implemented
+            if self.game.checkPiece(row,col,self.side) == False :#must be implemented
                 print "Invalid piece. try again"
                 continue
             drow, dcol = input ("Where do you want to move it?")
-            while !game.checkMove((row,col),drow,dcol):
+            while game.checkMove((row,col),drow,dcol) ==False:
                 print "Invalid Move. Try again!"
                 drow, dcol = input ("Where do you want to move it?")
 
@@ -87,4 +87,5 @@ class HumanPlayer(Player):
             elif self.game.board[row][col] != '-':
                 print("Invalid move: there is already a piece there")
             """
+            print "Hello!"
             return (drow, dcol)
