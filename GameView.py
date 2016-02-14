@@ -13,9 +13,27 @@ colors = ["red", "orange", "yellow", "green", "blue", "purple"]
 
 def myMousePressedFunction(world, mouseX, mouseY, button):
      for (x, y) in world.coords2pos:
+     	(row, col) = world.coords2pos[(x, y)]
+
      	dist = math.sqrt((mouseX - x)**2 + (mouseY - y)**2)
      	if dist < RADIUS:
-     		world.highlight.append((x, y))
+     		# clicked circle
+     		if world.source == None:
+     			# selecting source
+     			# check if legit source
+     			if world.game.checkPiece(row,col,world.turn):
+     				dests = world.game.getDests((row, col))
+     				if len(dests) > 0:
+     					world.source = ((row, col))
+     					world.highlight.append((x, y))
+     					for dest in dests:
+     						world.highlight.append(world.pos2coords[dest])
+     		elif world.dest == None:
+     			# selecting dest
+     			# check if legit dest
+     			dests = world.game.getDests(world.source)
+     			if (row, col) in dests:
+     				world.dest = ((row, col))
  
 ############################################################
 # this function is called once to initialize your new world
@@ -56,12 +74,19 @@ def updateWorld(world):
 		if world.players[world.turn].human != True:
 			world.game.iterate(world.turn)
 		else:
-			if world.source == None and world.dest == None:
+			if world.source == None or world.dest == None:
 				# waiting on human to make turn
 				world.turn -= 1 # counter act turn switch
 			else:
 				# human finished turn
-				pass
+				row, col = world.source
+				drow, dcol = world.dest
+
+				world.game.board[row][col] = -1
+				world.game.board[drow][dcol] = world.turn
+				world.highlight = []
+				world.source = None
+				world.dest = None
 
 	world.turn += 1
 	world.turn = world.turn % 6
@@ -82,6 +107,8 @@ def drawWorld(world):
 
 	for (x, y) in world.highlight:
 		fillCircle(x, y, RADIUS+1, "lightblue")
+
+	drawString("Player %d's turn" % (world.turn+1), 10, 10)
  
 ############################################################
 
