@@ -178,6 +178,28 @@ class CChecker(object):
         else:
             return (-1,-1)
 
+    def pieceDist(self,piece,goal):
+        """ 
+            given piece coordinate and 'side', simply calculates
+            number of moves needed to reach goal.
+        """
+        deltaRow = abs(piece[0]-goal[0])
+        deltaCol = abs(piece[1]-goal[1])
+
+        return deltaCol + deltaRow
+
+    def findPieces(self,side):
+        """
+            given side, returns list of tuple coordinates of all 
+            pieces
+        """
+        toRet = []
+        for row in range(17):
+            for col in range(17):
+                if board[row][col] == side:
+                    toRet.append((row, col))
+        return toRet
+
 def main():
     game = CChecker()
     players = []
