@@ -94,7 +94,7 @@ class CChecker(object):
 
     def getDests(self,piece):
         """
-        returns list of tupules of possible destinations
+        returns list of tuples of possible destinations
         """
         possible = []
         
