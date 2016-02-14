@@ -126,8 +126,10 @@ class CChecker(object):
             currNeighs = self.getNeighbors(curr[0],curr[1])
 
             for (r,c) in currNeighs:
-                if self.board[r][c] == 0:
+                if self.board[r][c] != -1:
                     jumper.append((r,c))
+
+            print "jumper",jumper
             for jump in jumper:
                 dest = self.findJump(curr,jump)
                 if dest[0] == -1 or dest in visited:
@@ -135,7 +137,7 @@ class CChecker(object):
                 possible.append(dest)
                 queue.add(dest)
         print "possible: ",possible
-        print "current: ",piece
+        print "current: ", piece
         return possible
 
     def checkMove(self, piece,dest,side):#rename getmove
