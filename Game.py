@@ -7,21 +7,6 @@ from Queues import FIFO_Queue
 from copy import deepcopy
 from Players import *
 
-def main():
-    print "hi"
-    game = CChecker()
-    print game
-    
-    p1 = HumanPlayer(game)
-    p2 = HumanPlayer(game)
-    p3 = HumanPlayer(game)
-    p4 = HumanPlayer(game)
-    p5 = HumanPlayer(game)
-    p6 = HumanPlayer(game)
-
-    game.playOneGame(p1, p2, p3, p4, p5, p6)
-    
-
 class CChecker(object):
     def __init__(self):
         """The board is represented as a list of lists with length
@@ -52,9 +37,6 @@ class CChecker(object):
         self.board = self.initBoard()
 
 
-    def playOneGame(self, player1, player2, p3, p4, p5, p6, show=True):
-        pass
-
     def play(self, players):
         self.reset()
         self.players = players
@@ -67,51 +49,6 @@ class CChecker(object):
             row, col, drow, dcol = player.getMove(self.board)
             self.board[row][col] = -1
             self.board[drow][dcol] = player.side
-
-
-    def playOneGame(self, player1, player2, show=True):
-        print "playonegame inside"
-        """Plays a game and returns winner."""
-        self.reset()
-        player1.setSide(0)
-        player2.setSide(1)
-        p3.setSide(2)
-        p4.setSide(3)
-        p5.setSide(4)
-        p6.setSide(5)
-        print("%s vs %s" % (player1.name, player2.name))
-        while True:
-            if show:
-                print(self)
-                print("Player 0's turn")
-            self.turn = 0
-            row, col = player1.getMove(self.board)
-            self.board[row][col] = self.turn
-            #print "score for black: ",player1.eval(self.board)
-            #connected = self.countConnected(self.board, self.turn)
-            #print "%s connected: %d" % (self.turn, connected)
-            if show:
-                print("Made move (%d, %d)" % (row, col))
-            if self.blackWins(self.board): 
-                winner = 0
-                break
-            if show:
-                print(self)
-                print("Player 1's turn")
-            self.turn = 1
-            row, col = player2.getMove(self.board)
-            
-            self.board[row][col] = self.turn
-            #connected = self.countConnected(self.board, self.turn)
-            #print "%s connected: %d" % (self.turn, connected)
-            if self.whiteWins(self.board): 
-                winner = 'W'
-                break
-        if show:
-            print(self)
-            print("%s wins" % self.turn)
-        return winner
-
 
     def getPossibleMoves(self, board):
         """Returns a list of all possible moves on the given board."""
@@ -152,49 +89,6 @@ class CChecker(object):
 
         return neighbors
 
-    def blackWins(self, board):
-        """Returns True if black player wins, otherwise False."""
-        queue = FIFO_Queue()
-        visited = set()
-        # Add all locations of black pieces in the leftmost col to queue
-        for row in range(self.size):
-            if board[row][0] == 'B':
-                queue.add((row, 0))
-        # Try to find a path to the rightmost col
-        while len(queue) > 0:
-            row, col = queue.get()
-            visited.add((row, col))
-            for n in self.getNeighbors(row, col):
-                r, c = n
-                if board[r][c] != 'B': continue
-                if c == self.size-1: return True
-                if n in visited or n in queue:
-                    continue
-                queue.add(n)
-        return False
-
-    def whiteWins(self, board):
-        """Returns True if white player wins, otherwise False."""
-        queue = FIFO_Queue()
-        visited = set()
-        # Add all locations of white pieces n the top row to queue
-        for col in range(self.size):
-            if board[0][col] == 'W':
-                queue.add((0, col))
-        # Try to find a path to the bottom row
-        while len(queue) > 0:
-            row, col = queue.get()
-            visited.add((row, col))
-            for n in self.getNeighbors(row, col):
-                r, c = n
-                if board[r][c] != 'W': continue
-                if r == self.size-1: return True
-                if n in visited or n in queue:
-                    continue
-                queue.add(n)
-        return False
-
-
     def checkPiece(self,row,col,side):
         return self.board[row][col]==side
 
@@ -211,7 +105,7 @@ class CChecker(object):
         queue = FIFO_Queue()
 
         queue.add(piece)
-        neighbors = getNeighbors(piece[0],piece[1])
+        neighbors = self.getNeighbors(piece[0],piece[1])
 
         """
             adds valid neighbors into list ofpossible
@@ -220,39 +114,39 @@ class CChecker(object):
         for neighbor in neighbors:
             curr = self.board[neighbor[0]][neighbor[1]]
             if curr != -1 or curr != None:
-                possible.append(curr)
+                possible.append(neighbor)
 
         while len(queue) != 0:
             curr = queue.get()
             jumper = []
-            currNeighs = getNeighbors(curr[0],curr[1])
+            currNeighs = self.getNeighbors(curr[0],curr[1])
 
             for currNeigh in currNeighs:
                 if self.board[currNeigh[0]][currNeigh[1]] ==-1:
                     jumper.append(curr)
 
             for jump in jumper:
-                dest = findJump(curr[0],curr[1],jump[0],jump[1])
+                dest = self.findJump(curr[0],curr[1],jump[0],jump[1])
                 if dest[0] == -1:
                     continue
                 possible.append(dest)
                 queue.add(dest)
+        print "possible: ",possible
+        print "current: ",piece
+        return possible
 
     def checkMove(self, piece,drow,dcol):#rename getmove
     #make actal checkmove
         """
         returns true if move valid. false if not
         """
-        poss = getDests(piece)
+        poss = self.getDests(piece)
 
         if (drow,dcol) in poss:
             return True
         else:
             return False
         
-
-
-
         
     def findJump(self,row,col,brow,bcol):
         """
@@ -274,33 +168,3 @@ class CChecker(object):
 
         else:
             return (-1,-1)
-
-
-    def countConnected(self, board, side):
-        """Counts how many pieces for the given side touch another piece
-        of the same side."""
-        q = FIFO_Queue()
-        visited = set()
-        connected = 0
-
-        #get all pieces of one color on the board
-        for row in range(self.size):
-            for col in range(self.size):
-                if board[row][col] == side:
-                    q.add( (row,col) )
-
-        while len(q) > 0:
-            row, col = q.get()
-            if (row,col) not in visited:
-                visited.add( (row,col) )
-                isConnected = False
-                for neighbor in self.getNeighbors(row,col):
-                    if board[ neighbor[0] ][ neighbor[1] ] == side:
-                        isConnected = True
-                if isConnected:
-                    connected += 1
-
-        return connected
-
-if __name__ == '__main__':
-    main()
