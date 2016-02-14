@@ -42,26 +42,6 @@ class Player(object):
         """
         raise NotImplementedError()
 
-class RandomChoicePlayer(Player):
-    """Selects a random choice move."""
-    def __init__(self, game):
-        Player.__init__(self)
-        self.name = "RandomChoicePlayer"
-        self.game = game
-    def getMove(self, board):
-        return choice(self.game.getPossibleMoves(board))
-
-class RandomShufflePlayer(Player):
-    """Shuffles the possible moves, then selects the first possible move."""
-    def __init__(self, game):
-        Player.__init__(self)
-        self.name = "RandomShufflePlayer"
-        self.game = game
-    def getMove(self, board):
-        possible = self.game.getPossibleMoves(board)
-        shuffle(possible)
-        return possible[0]
-
 class SimplePush(Player):
     """ Simple greedy Heuristic"""
     def __init__(self,game):
@@ -89,7 +69,7 @@ class SimplePush(Player):
         """
         TODO: Implement some sort of randomizer.
         """
-        pieces = findPieces(self.side)
+        pieces = self.game.findPieces(self.side)
         min = (None,None,float('inf'))
         for piece in pieces:
             currDist = self.game.pieceDist(piece,self.goal)
@@ -103,6 +83,23 @@ class SimplePush(Player):
         end = min[1]
         return (start[0],start[1],end[0],end[1])
 
+class RandomChoicePlayer(SimplePush):
+    """Selects a random choice move."""
+    def __init__(self, game):
+        Player.__init__(self)
+        self.name = "RandomChoicePlayer"
+        self.game = game
+    def getMove(self, board):
+        while True:
+            piece = choice(self.game.findPieces(self.side))
+            dest = choice(self.game.getDests(piece))
+            if dest == []:
+                continue
+            deltaDist = self.game.pieceDist(dest,self.goal) - \
+                        self.game.pieceDist(piece,self.goal)
+            if deltaDist <= 0:
+                break
+        return (piece[0],piece[1],dest[0],dest[1])
 
 class HumanPlayer(Player):
     """Selects a move chosen by the user."""
