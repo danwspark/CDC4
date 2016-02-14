@@ -9,6 +9,8 @@ RADIUS = 15
 HORT_GAP = 40
 VERT_GAP = HORT_GAP*(math.sqrt(3)/2)
 
+SLEEPER_T = 0
+
 colors = ["red", "orange", "yellow", "green", "blue", "purple"]
 
 def myMousePressedFunction(world, mouseX, mouseY, button):
@@ -42,7 +44,11 @@ def startWorld(world):
 	world.game = CChecker()
 	world.players = []
 	for i in range(6):
-		world.players.append(HumanPlayer(world.game))
+		p = RandomChoicePlayer(world.game, i)
+		# p.setSide(i)
+		world.players.append(p)
+
+	# world.players[0] = HumanPlayer(world.game, 0)
 
 	world.game.play(world.players)
 	world.turn = -1
@@ -52,6 +58,8 @@ def startWorld(world):
 	world.highlight = []
 	world.pos2coords = {}
 	world.coords2pos = {}
+
+	world.sleeper = SLEEPER_T
 
 	shift = VERT_GAP / math.sqrt(3)
 	t_shift = 12 * VERT_GAP / math.sqrt(3)
@@ -72,7 +80,15 @@ def startWorld(world):
 def updateWorld(world):
 	if world.turn != -1:
 		if world.players[world.turn].human != True:
-			world.game.iterate(world.turn)
+			
+			if world.sleeper > 0:
+				#wait by counter acting turn switch
+				world.turn -= 1
+				world.sleeper -= 1
+			else:
+				world.game.iterate(world.turn)
+				# reset for next turn
+				world.sleeper = SLEEPER_T
 		else:
 			if world.source == None or world.dest == None:
 				# waiting on human to make turn

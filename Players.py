@@ -9,10 +9,10 @@ from random import choice, shuffle
 class Player(object):
     """A base class for Hex players.  All players must implement the
     getMove method."""
-    def __init__(self):
+    def __init__(self, side):
         self.human = None
         self.name = None
-        self.side = None
+        self.side = side
         self.game = None
         self.wins = 0
         self.losses = 0
@@ -44,13 +44,15 @@ class Player(object):
 
 class SimplePush(Player):
     """ Simple greedy Heuristic"""
-    def __init__(self,game):
-        Player.__init__(self)
+    def __init__(self,game, side):
+        Player.__init__(self, side)
         self.name = "SimplePush"
         self.game = game
         self.goal = self.setGoal(self.side)
 
-    def setGoal(side):
+    def setGoal(self, side):
+
+        goal = None
         if side == 0:
             goal = (0,4)
         elif side == 1:
@@ -85,27 +87,33 @@ class SimplePush(Player):
 
 class RandomChoicePlayer(SimplePush):
     """Selects a random choice move."""
-    def __init__(self, game):
-        Player.__init__(self)
+    def __init__(self, game, side):
+        SimplePush.__init__(self, game, side)
         self.name = "RandomChoicePlayer"
         self.game = game
     def getMove(self, board):
+        runs = 0
         while True:
             piece = choice(self.game.findPieces(self.side))
-            dest = choice(self.game.getDests(piece))
-            if dest == []:
+            dests = self.game.getDests(piece)
+            if dests == []:
                 continue
-            deltaDist = self.game.pieceDist(dest,self.goal) - \
-                        self.game.pieceDist(piece,self.goal)
+        
+            dest = choice(dests)
+            deltaDist = self.game.pieceDist(dest,self.goal) - self.game.pieceDist(piece,self.goal)
+
             if deltaDist <= 0:
                 break
+            # elif runs > 20:
+            #     break
+            runs += 1
         return (piece[0],piece[1],dest[0],dest[1])
 
 class HumanPlayer(Player):
     """Selects a move chosen by the user."""
-    def __init__(self, game, name="HumanPlayer"):
-        Player.__init__(self)
-        self.name = name
+    def __init__(self, game, side):
+        Player.__init__(self, side)
+        #self.name = name
         self.game = game
         self.human = True
 

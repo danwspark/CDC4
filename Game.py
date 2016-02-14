@@ -129,15 +129,15 @@ class CChecker(object):
                 if self.board[r][c] != -1:
                     jumper.append((r,c))
 
-            print "jumper",jumper
+            #print "jumper",jumper
             for jump in jumper:
                 dest = self.findJump(curr,jump)
                 if dest[0] == -1 or dest in visited:
                     continue
                 possible.append(dest)
                 queue.add(dest)
-        print "possible: ",possible
-        print "current: ", piece
+        #print "possible: ",possible
+        #print "current: ", piece
         return possible
 
     def checkMove(self, piece,dest,side):#rename getmove
@@ -198,7 +198,7 @@ class CChecker(object):
         toRet = []
         for row in range(17):
             for col in range(17):
-                if board[row][col] == side:
+                if self.board[row][col] == side:
                     toRet.append((row, col))
         return toRet
 
