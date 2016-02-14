@@ -88,4 +88,4 @@ class HumanPlayer(Player):
                 print("Invalid move: there is already a piece there")
             """
             print "Hello!"
-            return (drow, dcol)
+            return (row, col, drow, dcol)

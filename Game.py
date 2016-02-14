@@ -111,26 +111,28 @@ class CChecker(object):
             adds valid neighbors into list ofpossible
             adds blocked neighbors to check 
         """
-        for neighbor in neighbors:
-            curr = self.board[neighbor[0]][neighbor[1]]
-            if curr != -1 or curr != None:
-                possible.append(neighbor)
+        for (r, c) in neighbors:
+            neighbor = self.board[r][c]
+            print "this is neighbor:", neighbor
+            print "this is cur:", (r, c)
+            if neighbor == -1:
+                possible.append((r, c))
 
-        while len(queue) != 0:
-            curr = queue.get()
-            jumper = []
-            currNeighs = self.getNeighbors(curr[0],curr[1])
+        # while len(queue) != 0:
+        #     curr = queue.get()
+        #     jumper = []
+        #     currNeighs = self.getNeighbors(curr[0],curr[1])
 
-            for currNeigh in currNeighs:
-                if self.board[currNeigh[0]][currNeigh[1]] ==-1:
-                    jumper.append(curr)
+        #     for currNeigh in currNeighs:
+        #         if self.board[currNeigh[0]][currNeigh[1]] ==-1:
+        #             jumper.append(curr)
 
-            for jump in jumper:
-                dest = self.findJump(curr[0],curr[1],jump[0],jump[1])
-                if dest[0] == -1:
-                    continue
-                possible.append(dest)
-                queue.add(dest)
+        #     for jump in jumper:
+        #         dest = self.findJump(curr[0],curr[1],jump[0],jump[1])
+        #         if dest[0] == -1:
+        #             continue
+        #         possible.append(dest)
+        #         queue.add(dest)
         print "possible: ",possible
         print "current: ",piece
         return possible
@@ -142,11 +144,7 @@ class CChecker(object):
         """
         poss = self.getDests(piece)
 
-        if (drow,dcol) in poss:
-            return True
-        else:
-            return False
-        
+        return (drow,dcol) in poss
         
     def findJump(self,row,col,brow,bcol):
         """
@@ -168,3 +166,17 @@ class CChecker(object):
 
         else:
             return (-1,-1)
+
+def main():
+    game = CChecker()
+    players = []
+    for i in range(6):
+        players.append(HumanPlayer(world.game))
+    game.play(players)
+
+
+
+
+                           
+if __name__ == '__main__':
+    main()
