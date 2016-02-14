@@ -75,19 +75,19 @@ class HumanPlayer(Player):
         while True:
             row, col = input("Enter row, col of the piece you want to move: ")
             if self.game.checkPiece(row,col,self.side) == False :#must be implemented
-                print "Invalid piece. try again"
+                print "That is not your piece. Try again"
                 continue
             drow, dcol = input ("Where do you want to move it?")
-            while self.game.checkMove((row,col),drow,dcol) ==False:
-                print "Invalid Move. Try again!"
-                drow, dcol = input ("Where do you want to move it?")
+            response = -1
+            while True:
+                response = self.game.checkMove((row,col),(drow,dcol),self.side)
+                if response == 0:
+                    print "Invalid Move. Try again!"
+                    drow, dcol = input ("Where do you want to move it?")
+                else:
+                    break
+            if response == -1:
+                print "Invalid move. Choose another piece to move."
+                continue
 
-            """ this should be moved to somewhere in the game itself
-            if row >= self.game.size or col >= self.game.size or \
-               row < 0 or col < 0:
-                print("Invalid move: row and col must be on board")
-            elif self.game.board[row][col] != '-':
-                print("Invalid move: there is already a piece there")
-            """
-            print "Hello!"
             return (row, col, drow, dcol)

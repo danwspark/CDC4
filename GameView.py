@@ -13,8 +13,6 @@ colors = ["red", "orange", "yellow", "green", "blue", "purple"]
 
 def myMousePressedFunction(world, mouseX, mouseY, button):
      for (x, y) in world.coords2pos:
-     	# print coords
-     	# x, y = coords
      	dist = math.sqrt((mouseX - x)**2 + (mouseY - y)**2)
      	if dist < RADIUS:
      		world.highlight.append((x, y))

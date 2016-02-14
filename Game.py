@@ -90,6 +90,8 @@ class CChecker(object):
         return neighbors
 
     def checkPiece(self,row,col,side):
+        if row > 16 or col > 16:
+            return False
         return self.board[row][col]==side
 
     def getDests(self,piece):
@@ -103,6 +105,7 @@ class CChecker(object):
         col = piece[1]
 
         queue = FIFO_Queue()
+        visited = set()
 
         queue.add(piece)
         neighbors = self.getNeighbors(piece[0],piece[1])
@@ -113,45 +116,53 @@ class CChecker(object):
         """
         for (r, c) in neighbors:
             neighbor = self.board[r][c]
-            print "this is neighbor:", neighbor
-            print "this is cur:", (r, c)
             if neighbor == -1:
                 possible.append((r, c))
 
-        # while len(queue) != 0:
-        #     curr = queue.get()
-        #     jumper = []
-        #     currNeighs = self.getNeighbors(curr[0],curr[1])
+        while len(queue) != 0:
+            curr = queue.get()
+            visited.add(curr)
+            jumper = []
+            currNeighs = self.getNeighbors(curr[0],curr[1])
 
-        #     for currNeigh in currNeighs:
-        #         if self.board[currNeigh[0]][currNeigh[1]] ==-1:
-        #             jumper.append(curr)
-
-        #     for jump in jumper:
-        #         dest = self.findJump(curr[0],curr[1],jump[0],jump[1])
-        #         if dest[0] == -1:
-        #             continue
-        #         possible.append(dest)
-        #         queue.add(dest)
+            for (r,c) in currNeighs:
+                if self.board[r][c] == 0:
+                    jumper.append((r,c))
+            for jump in jumper:
+                dest = self.findJump(curr,jump)
+                if dest[0] == -1 or dest in visited:
+                    continue
+                possible.append(dest)
+                queue.add(dest)
         print "possible: ",possible
         print "current: ",piece
         return possible
 
-    def checkMove(self, piece,drow,dcol):#rename getmove
+    def checkMove(self, piece,dest,side):#rename getmove
     #make actal checkmove
         """
         returns true if move valid. false if not
         """
+        drow = dest[0]
+        dcol = dest[1]
         poss = self.getDests(piece)
-
-        return (drow,dcol) in poss
+        if len(poss) == 0:
+            return -1
+        elif (drow,dcol) in poss:
+            return 1
+        elif (drow,dcol) not in poss:
+            return 0
         
-    def findJump(self,row,col,brow,bcol):
+    def findJump(self,curr,block):
         """
         for current row and col, and blocked neighbor brow, bcol:
         returns coordinate of jump destination
         returns -1,-1 if blocked there or unavailable
         """
+        row = curr[0]
+        col = curr[1]
+        brow = block[0]
+        bcol = block[1]
         deltaRow = brow - row
         deltaCol = bcol - col
         destRow = deltaRow + brow
@@ -173,11 +184,9 @@ def main():
     for i in range(6):
         players.append(HumanPlayer(game))
     game.play(players)
-    print "hi"
 
+    game.iterate()
 
-
-
-                           
+           
 if __name__ == '__main__':
     main()
