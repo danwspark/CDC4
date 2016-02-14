@@ -10,6 +10,7 @@ class Player(object):
     """A base class for Hex players.  All players must implement the
     getMove method."""
     def __init__(self):
+        self.human = None
         self.name = None
         self.side = None
         self.game = None
@@ -67,6 +68,7 @@ class HumanPlayer(Player):
         Player.__init__(self)
         self.name = name
         self.game = game
+        self.human = True
 
     def getMove(self, board):
         print("\n%s's turn" % (self.name))

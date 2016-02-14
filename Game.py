@@ -44,11 +44,11 @@ class CChecker(object):
             self.players[i].setSide(i)
 
         
-    def iterate(self):
-        for player in self.players:
-            row, col, drow, dcol = player.getMove(self.board)
-            self.board[row][col] = -1
-            self.board[drow][dcol] = player.side
+    def iterate(self, playerNum):
+        player = self.players[playerNum]
+        row, col, drow, dcol = player.getMove(self.board)
+        self.board[row][col] = -1
+        self.board[drow][dcol] = player.side
 
     def getPossibleMoves(self, board):
         """Returns a list of all possible moves on the given board."""
@@ -171,8 +171,9 @@ def main():
     game = CChecker()
     players = []
     for i in range(6):
-        players.append(HumanPlayer(world.game))
+        players.append(HumanPlayer(game))
     game.play(players)
+    print "hi"
 
 
 
