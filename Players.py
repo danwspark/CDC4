@@ -62,6 +62,48 @@ class RandomShufflePlayer(Player):
         shuffle(possible)
         return possible[0]
 
+class SimplePush(Player):
+    """ Simple greedy Heuristic"""
+    def __init__(self,game):
+        Player.__init__(self)
+        self.name = "SimplePush"
+        self.game = game
+        self.goal = self.setGoal(self.side)
+
+    def setGoal(side):
+        if side == 0:
+            goal = (0,4)
+        elif side == 1:
+            goal = (4,0)
+        elif side == 2:
+            goal = (12,4)
+        elif side == 3:
+            goal = (16,12)
+        elif side == 4:
+            goal = (12,16)
+        elif side == 5:
+            goal = (4,12)
+        return goal
+
+    def getMove(self, board):
+        """
+        TODO: Implement some sort of randomizer.
+        """
+        pieces = findPieces(self.side)
+        min = (None,None,float('inf'))
+        for piece in pieces:
+            currDist = self.game.pieceDist(piece,self.goal)
+            dests = self.game.getDests(piece)
+            for dest in dests:
+                destDist = self.game.pieceDist(dest,self.goal)
+                deltaDist = destDist - currDist
+                if deltaDist < min[3]:
+                    min = (piece,dest,deltaDist)
+        start = min[0]
+        end = min[1]
+        return (start[0],start[1],end[0],end[1])
+
+
 class HumanPlayer(Player):
     """Selects a move chosen by the user."""
     def __init__(self, game, name="HumanPlayer"):
