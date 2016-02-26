@@ -48,7 +48,7 @@ def startWorld(world):
 		# p.setSide(i)
 		world.players.append(p)
 
-	# world.players[0] = HumanPlayer(world.game, 0)
+	world.players[0] = HumanPlayer(world.game, 0)
 
 	world.game.play(world.players)
 	world.turn = -1
